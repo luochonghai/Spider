@@ -1,0 +1,12 @@
+<script>
+		document.write("<xmp>");
+        document.write(function de(str, count, strReplace) 
+        {
+	var arrReplace = strReplace.split('|');
+	for (var i = 0; i < count; i++) {
+		str = str.replace(new RegExp('\\{' + i + '\\}', 'g'), arrReplace[i])
+	}
+	return str
+}("your string here!"));
+        document.write("</xmp>");
+</script>
