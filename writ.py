@@ -7,6 +7,7 @@ import http.cookiejar
 import execjs
 import random
 import sys,os
+import reading
 
 '''to get raw text from .aspx'''
 def get_text():
@@ -26,11 +27,12 @@ def get_text():
         "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36",
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"
         ]
+    #use counter to count how many wirts have been recorded
     counter = 0
     while doc_id:
+        #use refresh_visit to revisit the website for info
+        refresh_visit = 0
         try:
-            ws_raw = open("D:\\FDU\\Template\\NLP(ZhipengXie)\\Spider\\ws_"+str(counter)+".txt","a+")
-            counter += 1
             target_url = ws_url+"?DocID="+doc_id
             target_title = ws_title+"?DocID="+doc_id
             codereq = urllib.request.Request(target_url)
@@ -40,8 +42,19 @@ def get_text():
             # codetitle = urllib.request.Request(target_title)
             # codetitle.add_header('User-Agent',random.choice(uapools))
             # datatitle = urllib.request.urlopen(codetitle).read().decode("utf-8","ignore")
-            ws_raw.write(data)
-            ws_raw.close()
+            if(len(data) > 50):
+                ws_raw = open("D:\\FDU\\Template\\NLP(ZhipengXie)\\Spider\\ws\\ws_"+str(counter)+".txt","a+")
+                counter += 1
+                print(counter)
+                ws_raw.write(data)
+                ws_raw.close()
+                doc_id = fh.readline()
+                refresh_visit = 0
+            elif refresh_visit < 5:
+                refresh_visit += 1
+            else:
+                refresh_visit = 0
+                doc_id = fh.readline()
             # print(datatitle)
         except Exception as err:
             print(err)
@@ -52,6 +65,8 @@ def get_text():
 def extract_text(file_path):
     fh = open(file_path,"r")
     raw_text = fh.read()
+    if len(raw_text) < 50:
+        return 
     fh.close()
     temp_str_list = file_path.split(".")
     new_file_path = temp_str_list[0]+"_cooked.txt"
@@ -189,5 +204,5 @@ def extract_text(file_path):
 if __name__ =="__main__":
     counter = get_text()
     for i in range(counter):
-        file_path = "ws_"+str(i)+".txt"
-        extract_text(file_path)
+        file_path = "D:\\FDU\\Template\\NLP(ZhipengXie)\\Spider\\ws\\ws_"+str(i)+".txt"
+        reading.extract_text(file_path)

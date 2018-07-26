@@ -89,4 +89,4 @@ if __name__ == '__main__':
     counter = writ.get_text()
     for i in range(counter):
         file_path = "ws_"+str(i)+".txt"
-    writ.extract_text(file_path)
+        writ.extract_text(file_path)
