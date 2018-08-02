@@ -9,3 +9,6 @@ Spider_for_baiduzhidao
       As shown in the website, finetune the file_path&target_url, and you can get different sources of writ from wenshu.court.gov.cn.
       PS:It seems that the server of the government website is somehow weaker than I imagine, and it tends to kill you IP when your 
       IP sends just a few requests to it.
+3.Advance
+---- 
+      Use data crabbed from the website to form a corpus, then transfer string to vector and calculate their cos similarity.
